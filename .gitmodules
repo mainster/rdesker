@@ -1,0 +1,3 @@
+[submodule "mdbQtStd"]
+	path = mdbQtStd
+	url = git@github.com:mainster/mdbQtStd.git

@@ -1,0 +1,71 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/save.png</file>
+        <file>images/paste.png</file>
+        <file>images/open.png</file>
+        <file>images/new.png</file>
+        <file>images/cut.png</file>
+        <file>images/copy.png</file>
+        <file>images/export-3.png</file>
+        <file>images/database.png</file>
+        <file>images/databaseSubmit.png</file>
+        <file>images/databaseDelegate.png</file>
+        <file>images/databaseConf.png</file>
+        <file>images/underConstruct.svg</file>
+        <file>images/settings.png</file>
+        <file>images/clear.png</file>
+        <file alias="icoExit">images/application-exit.png</file>
+        <file alias="icoDelete">images/deleteRed.png</file>
+        <file>images/1downarrow16.png</file>
+        <file alias="sortdown">images/1downarrow13.png</file>
+        <file>images/up_arrow.png</file>
+        <file>images/down_arrow.png</file>
+        <file>images/notes.png</file>
+        <file>images/greenCheck.png</file>
+        <file>images/editor.png</file>
+        <file alias="sortup">images/uparrow.png</file>
+        <file>images/search.png</file>
+        <file>images/splashScreen.png</file>
+        <file>images/databaseInpFrmV4.png</file>
+    </qresource>
+    <qresource prefix="/textedit">
+        <file>images/textedit_res/win/zoomout.png</file>
+        <file>images/textedit_res/win/zoomin.png</file>
+        <file>images/textedit_res/win/textunder.png</file>
+        <file>images/textedit_res/win/textright.png</file>
+        <file>images/textedit_res/win/textleft.png</file>
+        <file>images/textedit_res/win/textjustify.png</file>
+        <file>images/textedit_res/win/textitalic.png</file>
+        <file>images/textedit_res/win/textcenter.png</file>
+        <file>images/textedit_res/win/textbold.png</file>
+        <file>images/textedit_res/win/filesave.png</file>
+        <file>images/textedit_res/win/fileprint.png</file>
+        <file>images/textedit_res/win/fileopen.png</file>
+        <file>images/textedit_res/win/filenew.png</file>
+        <file>images/textedit_res/win/exportpdf.png</file>
+        <file>images/textedit_res/win/editundo.png</file>
+        <file>images/textedit_res/win/editredo.png</file>
+        <file>images/textedit_res/win/editpaste.png</file>
+        <file>images/textedit_res/win/editcut.png</file>
+        <file>images/textedit_res/win/editcopy.png</file>
+        <file>images/textedit_res/mac/zoomout.png</file>
+        <file>images/textedit_res/mac/zoomin.png</file>
+        <file>images/textedit_res/mac/textunder.png</file>
+        <file>images/textedit_res/mac/textright.png</file>
+        <file>images/textedit_res/mac/textleft.png</file>
+        <file>images/textedit_res/mac/textjustify.png</file>
+        <file>images/textedit_res/mac/textitalic.png</file>
+        <file>images/textedit_res/mac/textcenter.png</file>
+        <file>images/textedit_res/mac/textbold.png</file>
+        <file>images/textedit_res/mac/filesave.png</file>
+        <file>images/textedit_res/mac/fileprint.png</file>
+        <file>images/textedit_res/mac/fileopen.png</file>
+        <file>images/textedit_res/mac/filenew.png</file>
+        <file>images/textedit_res/mac/exportpdf.png</file>
+        <file>images/textedit_res/mac/editundo.png</file>
+        <file>images/textedit_res/mac/editredo.png</file>
+        <file>images/textedit_res/mac/editpaste.png</file>
+        <file>images/textedit_res/mac/editcut.png</file>
+        <file>images/textedit_res/mac/editcopy.png</file>
+    </qresource>
+</RCC>
