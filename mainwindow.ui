@@ -6,20 +6,61 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
-    <height>294</height>
+    <width>389</width>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="gboxCreds">
+      <property name="title">
+       <string>Credentials</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QListWidget" name="listCreds">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="gboxClient">
+      <property name="title">
+       <string>Client</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QListWidget" name="listClient">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>394</width>
+     <width>389</width>
      <height>24</height>
     </rect>
    </property>
@@ -31,12 +72,24 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actKnopf"/>
+   <addaction name="actConnect"/>
+   <addaction name="actWOL"/>
+   <addaction name="actTry"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actKnopf">
+  <action name="actConnect">
    <property name="text">
-    <string>Knopf</string>
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actWOL">
+   <property name="text">
+    <string>WOL</string>
+   </property>
+  </action>
+  <action name="actTry">
+   <property name="text">
+    <string>try</string>
    </property>
   </action>
  </widget>
