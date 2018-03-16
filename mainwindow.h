@@ -19,10 +19,7 @@ namespace Ui {
 
 
 struct Credential {
-	Credential() { }
-	~Credential() { }
-	Credential(const Credential &) { }
-
+	Credential() { INFO << QString("default constructor!"); }
 	Credential(QString Domain, QString User, QString Pass) :
 		mDomain(Domain), mUser(User), mPass(Pass) { }
 	Credential(QString DUP, QChar sep) :
@@ -39,6 +36,9 @@ struct Credential {
 	QString getPass() {
 		return QString(mPass);
 	}
+	QString getHiddenPass() {
+		return QString("*").repeated(mPass.length());
+	}
 	QString getDomUserPass(QChar sep = ':') {
 		mSep = sep;
 		return QString(mDomain + sep + mUser + sep + mPass);
@@ -50,7 +50,7 @@ struct Credential {
 };
 Q_DECLARE_METATYPE(Credential);
 
-//typedef struct Credential Credential;
+typedef struct Credential Credential;
 
 
 class MainWindow : public QMainWindow {
@@ -60,6 +60,8 @@ class MainWindow : public QMainWindow {
 
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+
+	Credential cred;
 
  public slots:
 //	friend QDataStream &operator>>(QDataStream &in, MainWindow::Credential &c);

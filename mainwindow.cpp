@@ -15,7 +15,6 @@ QDataStream &operator>>(QDataStream &in, Credential &c) {
 	return in;
 }
 
-
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent), ui(new Ui::MainWindow) {
 	ui->setupUi(this);
@@ -24,14 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	qRegisterMetaTypeStreamOperators<Credential>("Credential");
 
 	QSETTINGS_INIT
-	QSETTINGS
+	QSETTINGS;
 
-	Credential cr = Credential(tr("DEL-BdASSO"), tr("vitddiano"), tr("chefo"));
-	QVariant var;
+//	Credential cr = Credential(tr("DEL-BdASSO"), tr("vitddiano"), tr("chefo"));
+//	QVariant var;
+//	var.fromValue(cr);
 
-	var.fromValue(cr);
-
-
+	cred = Credential(tr("DEL-BASSO"), tr("vitaliano"), tr("chefe"));
 	createLists();
 	createActions();
 
@@ -56,7 +54,8 @@ void MainWindow::createLists() {
 								 << tr("PC-Mitarbeiter:5389")
 								 << tr("PC-Karin:7389")
 								 << tr("NB-Werkstatt-2:4389")
-								 << tr("NB-Meister");
+								 << tr("NB-Meister")
+								 << tr("PC-Buchhaltung");
 
 	QList<Credential> credentials = QList<Credential>()
 											  << Credential(tr("DEL-BASSO"), tr("vitaliano"), tr("chefe"))
@@ -65,6 +64,29 @@ void MainWindow::createLists() {
 											  << Credential(tr("DEL-BASSO"), tr("manuel"), tr("Themegrepper09||@!"))
 											  << Credential(tr("DEL-BASSO"), tr("admin"), tr("#delB@550#!"))
 											  << Credential(tr("DEL-BASSO"), tr("mitarbeiter"), tr("mitarbiter"));
+
+	ui->listClient->insertItems(0, clients);
+
+	foreach (Credential c, credentials)
+		ui->listCreds->addItem(c.getDomUserPass('\t'));
+
+	return;
+
+	config.beginWriteArray("clients");
+	for (int i = 0; i < clients.size(); ++i) {
+		 config.setArrayIndex(i);
+		 config.setValue(tr("client"),clients.at(i));
+	}
+	config.endArray();
+
+	int i = 0;
+	config.beginWriteArray("clients");
+	foreach (Credential c, credentials) {
+		config.setArrayIndex(i++);
+		config.setValue(tr("credent"), c.getDomUserPass('\t'));
+	}
+	config.endArray();
+
 
 	QVariant var = config.value("credentials");
 	Credential cr;
@@ -82,12 +104,6 @@ void MainWindow::createLists() {
 	config.sync();
 
 
-//	config.beginWriteArray("clients");
-//	for (int i = 0; i < clients.size(); ++i) {
-//		 config.setArrayIndex(i);
-//		 config.setValue(tr("client"),clients.at(i));
-//	}
-//	config.endArray();
 
 //	config.beginWriteArray("credentials");
 //	for (int i = 0; i < credentials.size(); ++i) {
@@ -99,23 +115,13 @@ void MainWindow::createLists() {
 //	config.endArray();
 
 
-	ui->listClient->insertItems(0, clients);
 
-	foreach (Credential c, credentials)
-		ui->listCreds->addItem(c.getDomUserPass('\t'));
 
 	return;
 
 
-//	int i = 0;
-//	config.beginWriteArray("clients");
-//	foreach (Credential c, credentials) {
-//		config.setArrayIndex(i++);
-//		config.setValue(tr("credent"), c.getDomUserPass('\t'));
-//	}
-//	config.endArray();
 
-	int i = 0;
+
 	config.beginWriteArray("clarray");
 	foreach (Credential c, credentials) {
 		config.setArrayIndex(i++);
