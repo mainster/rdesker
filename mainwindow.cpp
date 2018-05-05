@@ -53,22 +53,37 @@ void MainWindow::createLists() {
 								 << tr("PC-Vitaliano:6389")
 								 << tr("PC-Mitarbeiter:5389")
 								 << tr("PC-Karin:7389")
-								 << tr("NB-Werkstatt-2:4389")
+								 << tr("NB-Torsten:8389")
 								 << tr("NB-Meister")
 								 << tr("PC-Buchhaltung");
 
 	QList<Credential> credentials = QList<Credential>()
-											  << Credential(tr("DEL-BASSO"), tr("vitaliano"), tr("chefe"))
-											  << Credential(tr("DEL-BASSO"), tr("karin"), tr("cleohundi290409"))
-											  << Credential(tr("DEL-BASSO"), tr("torsten"), tr("torsten"))
-											  << Credential(tr("DEL-BASSO"), tr("manuel"), tr("Themegrepper09||@!"))
-											  << Credential(tr("DEL-BASSO"), tr("admin"), tr("#delB@550#!"))
-											  << Credential(tr("DEL-BASSO"), tr("mitarbeiter"), tr("mitarbiter"));
+			<< Credential(tr("DEL-BASSO"), tr("vitaliano"), tr("chefe"))
+			<< Credential(tr("DEL-BASSO"), tr("karin"), tr("cleohundi290409"))
+			<< Credential(tr("DEL-BASSO"), tr("manuel"), tr("Themegrepper09||@!"))
+			<< Credential(tr("DEL-BASSO"), tr("admin"), tr("#delB@550#!"))
+			<< Credential(tr("DEL-BASSO"), tr("torsten"), tr("torsten1969"))
+			<< Credential(tr("DEL-BASSO"), tr("mitarbeiter"), tr("mitarbiter"));
+
+	QList<QSize> displaySize = QList<QSize>()
+			<< QSize(1920, 1080)
+			<< QSize(1920, 1050)
+			<< QSize(1680, 1050)
+			<< QSize(1600, 1200)
+			<< QSize(1440, 900)
+			<< QSize(1280, 1024)
+			<< QSize(1280, 960)
+			<< QSize(1280, 800)
+			<< QSize(1280, 720)
+			<< QSize(1024, 768);
 
 	ui->listClient->insertItems(0, clients);
 
 	foreach (Credential c, credentials)
 		ui->listCreds->addItem(c.getDomUserPass('\t'));
+
+	ui->listDisplay->insertItems(0, sizeListToStringList(displaySize));
+	ui->listDisplay->setMinimumWidth(ui->listDisplay->sizeHintForColumn(0));
 
 	return;
 
@@ -185,19 +200,39 @@ void MainWindow::onActConnectTriggered(bool trigged) {
 	bool ok;
 
 	QString command = "rdesktop";
-	QString targetIP = tr("remote.del-basso.de");
+	QString targetIP = (ui->cbLocal->isChecked())
+			? ui->listClient->selectedItems()[0]->text().split(':').first()
+			: tr("remote.del-basso.de");
+
 	int targetPort =
 		ui->listClient->selectedItems()[0]->text().split(':').last().toInt(&ok);
+
+	QString gArgument;
+
+	if (ui->listDisplay->selectedItems().isEmpty()) {
+		bool ok;
+		gArgument = QString::number(
+					QInputDialog::getInt(this, tr("QInputDialog::getInteger()"),
+												tr("Percentage:"), 75, 0, 100, 1, &ok));
+		if (! ok)
+			gArgument = tr("75");
+
+		gArgument += tr("%");
+	}
+	else
+		gArgument = ui->listDisplay->selectedItems()[0]->text();
+
 
 	Credential cred = Credential(ui->listCreds->selectedItems()[0]->text(), '\t');
 	QStringList args = QStringList()
 							 << tr("-d%1").arg(cred.getDom())
 							 << tr("-u%1").arg(cred.getUser())
 							 << tr("-p%1").arg(cred.getPass())
-							 << tr("-g1280x768")
+							 << tr("-g%1").arg(gArgument)
 							 << tr("-a16")
 							 << tr("-kde");
 //							 << tr("-z");
+
 
 	if (ok)
 		args << tr("%1:%2").arg(targetIP).arg(targetPort);
@@ -210,7 +245,7 @@ void MainWindow::onActConnectTriggered(bool trigged) {
 
 	QProcess process;
 	process.start(command, args);
-	process.waitForFinished(-1);
+	INFO << process.waitForFinished(-1);
 
 //	process.waitForStarted(2000);
 
