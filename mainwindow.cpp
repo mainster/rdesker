@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "mdbQtStd/globals.h"
+#include "mdbQtStd/mdbQtStd.h"
+#include "mdbQtStd/types.h"
 
 QDataStream &operator<<(QDataStream &out, const Credential &c) {
 	out << c.mDomain << c.mSep
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->actWOL->setDisabled(true);
 	ui->actConnect->setDisabled(true);
-
+	ui->cbLocal->setChecked(config.value("cbLocal", false).toBool());
 	connectSlots();
 }
 MainWindow::~MainWindow() {
@@ -54,7 +55,8 @@ void MainWindow::createLists() {
 								 << tr("PC-Mitarbeiter:5389")
 								 << tr("PC-Karin:7389")
 								 << tr("NB-Torsten:8389")
-								 << tr("NB-Meister")
+								 << tr("NB-Meister:9389")
+								 << tr("nb-manu")
 								 << tr("PC-Buchhaltung");
 
 	QList<Credential> credentials = QList<Credential>()
@@ -82,10 +84,8 @@ void MainWindow::createLists() {
 	foreach (Credential c, credentials)
 		ui->listCreds->addItem(c.getDomUserPass('\t'));
 
-	ui->listDisplay->insertItems(0, sizeListToStringList(displaySize));
+	ui->listDisplay->insertItems(0, sizeListToStringList<QString>(displaySize));
 	ui->listDisplay->setMinimumWidth(ui->listDisplay->sizeHintForColumn(0));
-
-	return;
 
 	config.beginWriteArray("clients");
 	for (int i = 0; i < clients.size(); ++i) {
@@ -117,25 +117,7 @@ void MainWindow::createLists() {
 	}
 
 	config.sync();
-
-
-
-//	config.beginWriteArray("credentials");
-//	for (int i = 0; i < credentials.size(); ++i) {
-//		config.setArrayIndex(i);
-//		QVariant var;
-//		var.setValue(credentials.at(i));
-//		config.setValue(tr("credent"), var);
-//	}
-//	config.endArray();
-
-
-
-
 	return;
-
-
-
 
 	config.beginWriteArray("clarray");
 	foreach (Credential c, credentials) {
@@ -196,6 +178,7 @@ void MainWindow::createActions() {
 
 }
 void MainWindow::onActConnectTriggered(bool trigged) {
+	QSETTINGS;
 	Q_UNUSED(trigged);
 	bool ok;
 
@@ -204,10 +187,18 @@ void MainWindow::onActConnectTriggered(bool trigged) {
 			? ui->listClient->selectedItems()[0]->text().split(':').first()
 			: tr("remote.del-basso.de");
 
+	QStringList target = targetIP.split(':', QString::SkipEmptyParts);
+	if (target.count() < 2)
+		target.append(":3389");
+	targetIP = target.at(0) + target.at(1);
+
+	ui->statusBar->showMessage("Target IP: " + targetIP);
+
 	int targetPort =
 		ui->listClient->selectedItems()[0]->text().split(':').last().toInt(&ok);
 
 	QString gArgument;
+	QString geometry = config.value(targetIP + "/geometry").toString();
 
 	if (ui->listDisplay->selectedItems().isEmpty()) {
 		bool ok;
@@ -231,8 +222,6 @@ void MainWindow::onActConnectTriggered(bool trigged) {
 							 << tr("-g%1").arg(gArgument)
 							 << tr("-a16")
 							 << tr("-kde");
-//							 << tr("-z");
-
 
 	if (ok)
 		args << tr("%1:%2").arg(targetIP).arg(targetPort);
@@ -241,21 +230,10 @@ void MainWindow::onActConnectTriggered(bool trigged) {
 
 	INFO << tr("%1 %2").arg(command).arg(args.join(" "));
 
-//	QThread
-
 	QProcess process;
 	process.start(command, args);
 	INFO << process.waitForFinished(-1);
 
-//	process.waitForStarted(2000);
-
-//	if (process.exitCode() != 0) {
-//		INFO << " Error " << process.exitCode() << process.readAllStandardError();
-//	} else {
-//		INFO << " Ok " << process.readAllStandardError()
-//			  << process.readAllStandardError()
-//			  << process.readAll();
-//	}
 }
 void MainWindow::onActionGroupTrigd(QAction *sender) {
 	QSETTINGS;
@@ -275,14 +253,6 @@ void MainWindow::onActionGroupTrigd(QAction *sender) {
 }
 void MainWindow::onActTry(bool triiggd) {
 	Q_UNUSED(triiggd)
-}
-void MainWindow::connectSlots() {
-	QObject::connect(ui->listClient, &QListWidget::itemSelectionChanged,
-						  this, &MainWindow::onSelectionChanged);
-	QObject::connect(ui->actConnect, &QAction::triggered,
-						  this, &MainWindow::onActConnectTriggered);
-	QObject::connect(ui->actTry, &QAction::triggered,
-						  this, &MainWindow::onActTry);
 }
 bool MainWindow::restoreActionObjects() {
 	QSETTINGS;
@@ -364,4 +334,17 @@ bool MainWindow::restoreActionObjects() {
 
 	//	return true;
 }
-
+void MainWindow::on_cbLocal_stateChanged(int state) {
+	 QSETTINGS;
+	 config.setValue(tr("cbLocal"), state);
+}
+void MainWindow::connectSlots() {
+	QObject::connect(ui->listClient, &QListWidget::itemSelectionChanged,
+						  this, &MainWindow::onSelectionChanged);
+	QObject::connect(ui->actConnect, &QAction::triggered,
+						  this, &MainWindow::onActConnectTriggered);
+	QObject::connect(ui->actTry, &QAction::triggered,
+						  this, &MainWindow::onActTry);
+	QObject::connect(ui->cbLocal, &QCheckBox::stateChanged,
+						  this, &MainWindow::on_cbLocal_stateChanged);
+}

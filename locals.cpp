@@ -1,4 +1,4 @@
-#include "mdbQtStd/globals.h"
+#include "mdbQtStd/mdbQtStd.h"
 #include "locals.h"
 
 const QList<QString> Locals::BASE_DATA_TABLE_NAMES {

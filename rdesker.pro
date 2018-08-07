@@ -15,19 +15,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
 		mainwindow.cpp \
 	mdbQtStd/debug.cpp \
-	mdbQtStd/globals.cpp \
-#    mdbQtStd/mdeventfilters.cpp \
+	mdbQtStd/mdbQtStd.cpp \
 	mdbQtStd/mdstatebar.cpp \
 	mdbQtStd/types.cpp \
-    locals.cpp
+	locals.cpp \
+    myclass.cpp
 
 HEADERS  += mainwindow.h \
 	mdbQtStd/debug.h \
-	mdbQtStd/globals.h \
-#    mdbQtStd/mdeventfilters.h \
 	mdbQtStd/mdstatebar.h \
+	mdbQtStd/mdbQtStd.h \
 	mdbQtStd/types.h \
-    locals.h
+	locals.h \
+    myclass.h
 
 FORMS    += mainwindow.ui
 

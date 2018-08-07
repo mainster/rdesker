@@ -11,7 +11,7 @@
 #include <QProcess>
 #include <QDataStream>
 
-#include "mdbQtStd/globals.h"
+#include "mdbQtStd/mdbQtStd.h"
 
 namespace Ui {
 	class MainWindow;
@@ -52,13 +52,22 @@ Q_DECLARE_METATYPE(Credential);
 
 typedef struct Credential Credential;
 
+template<class U, class T>
+QList<U> sizeListToStringList (QList<T> siz) {
+	QList<U> str;
+	foreach (T t, siz) {
+		str << QString("%1x%2").arg(t.width()).arg(t.height());
+	}
+	return str;
+}
+
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
  public:
 
-	explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
 	Credential cred;
@@ -82,7 +91,9 @@ protected:
 	void createActions();
 	void onActConnectTriggered(bool trigged);
 
- private:
+	void on_cbLocal_stateChanged(int state);
+
+private:
 	Ui::MainWindow *ui;
 	QAction *actRpc1, *actRpc2, *actRpc3;
 	QActionGroup *actGrTbMain, *actGrTbMenu, *actGrp;

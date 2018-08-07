@@ -2,7 +2,7 @@
 #define LOCALS_H
 
 #include <QString>
-#include "mdbQtStd/globals.h"
+#include "mdbQtStd/mdbQtStd.h"
 
 #define MAINWINDOW_TITLE QString(qApp->applicationName())
 
